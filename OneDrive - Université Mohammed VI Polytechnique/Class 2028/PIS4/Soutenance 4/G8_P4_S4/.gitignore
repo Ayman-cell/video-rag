@@ -1,0 +1,14 @@
+# Fichiers système et IDE
+.DS_Store
+Thumbs.db
+*.pyc
+__pycache__/
+.venv/
+venv/
+.env
+
+# Fichiers du projet à ne pas versionner (hors mars rover)
+*.pptx
+*.pdf
+
+# On pousse uniquement le dossier mars rover + ce README racine si besoin
