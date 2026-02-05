@@ -1,0 +1,12 @@
+# Dépendances pour le module de détection QR (YOLO) + communication Arduino
+# Mars Rover - G8_P4_S4
+
+# Détection QR basée YOLOv8
+qrdet>=2.0.0
+
+# Vision et décodage
+opencv-python>=4.8.0
+numpy>=1.24.0
+
+# Communication série avec Arduino/ESP32
+pyserial>=3.5

@@ -1,0 +1,143 @@
+    def setup_voice_control():
+        """Voice control setup based on previous interface"""
+        try:
+            from vosk import Model, KaldiRecognizer
+            import pyaudio
+            import json
+            
+            VOICE_MODEL_PATH = "path/to/vosk-model"  # Update this path
+            
+            if not os.path.exists(VOICE_MODEL_PATH):
+                print(f"Vosk model not found at: {VOICE_MODEL_PATH}")
+                return False
+            
+            # Initialize voice recognition
+            model = Model(VOICE_MODEL_PATH)
+            recognizer = KaldiRecognizer(model, 16000)
+            recognizer.SetWords(True)
+            
+            # Initialize audio input
+            mic = pyaudio.PyAudio()
+            stream = mic.open(
+                rate=16000,
+                channels=1,
+                format=pyaudio.paInt16,
+                input=True,
+                frames_per_buffer=2048,
+                input_device_index=None
+            )
+            
+            gui.voice_recognizer = recognizer
+            gui.voice_stream = stream
+            gui.voice_mic = mic
+            gui.SPEECH_ON = False
+            
+            print("Voice control initialized")
+            return True
+        except Exception as e:
+            print(f"Voice control error: {e}")
+            return False
+    
+    def toggle_speech():
+        """Toggle speech recognition on/off"""
+        if not hasattr(gui, 'SPEECH_ON'):
+            return
+        
+        gui.SPEECH_ON = not gui.SPEECH_ON
+        if gui.SPEECH_ON:
+            print("START speech to text")
+            vosk_speech_to_text()
+        else:
+            print("STOP speech to text")
+    
+    def vosk_speech_to_text():
+        """Speech to text processing"""
+        def speech_to_text_stream():
+            if not hasattr(gui, 'voice_stream') or gui.voice_stream is None:
+                return
+            
+            try:
+                data = gui.voice_stream.read(4096, exception_on_overflow=False)
+                
+                if gui.voice_recognizer.AcceptWaveform(data):
+                    result = json.loads(gui.voice_recognizer.Result())
+                    text = result.get('text', '').strip()
+                    
+                    if text:
+                        print(f"Voice command: {text}")
+                        process_voice_command(text)
+                
+                # Partial results for real-time feedback
+                partial = json.loads(gui.voice_recognizer.PartialResult())
+                if 'partial' in partial:
+                    partial_text = partial['partial']
+                    if partial_text:
+                        print(f"Listening: {partial_text}")
+            except Exception as e:
+                print(f"Error processing audio: {e}")
+            
+            if gui.SPEECH_ON:
+                gui.root.after(10, vosk_speech_to_text)
+        
+        threading.Thread(target=speech_to_text_stream, daemon=True).start()
+    
+    def process_voice_command(text):
+        """Process voice commands"""
+        text_lower = text.lower()
+        print(f"Processing voice command: {text_lower}")
+        
+        # Voice command logic from previous interface
+        if any(greet in text_lower for greet in ["hello", "hi", "hey"]):
+            print("Response: Hello there!")
+        elif "stop" in text_lower: 
+            print("Response: STOP")
+            send_robot_command("MvtControl H 0 0 0\n")
+        elif "forward" in text_lower: 
+            print("Response: Forward")
+            # You would need to get the current speed value from your GUI
+            send_robot_command("MvtControl H 0 10 0\n")  # Example speed
+        elif "backward" in text_lower: 
+            print("Response: Backward")
+            send_robot_command("MvtControl H 0 -10 0\n")  # Example speed
+        elif "left" in text_lower: 
+            print("Response: Left")
+            send_robot_command("MvtControl H -10 0 0\n")  # Example speed
+        elif "right" in text_lower: 
+            print("Response: Right")
+            send_robot_command("MvtControl H 10 0 0\n")  # Example speed
+        elif "rotate" in text_lower: 
+            print("Response: Rotate")
+            # You would need to get the current rotation speed value from your GUI
+            send_robot_command("MvtControl H 0 0 1\n")  # Example rotation speed
+    
+    def voice_cleanup():
+        """Clean up voice recognition resources"""
+        if hasattr(gui, 'voice_stream') and gui.voice_stream is not None:
+            gui.voice_stream.stop_stream()
+            gui.voice_stream.close()
+        if hasattr(gui, 'voice_mic') and gui.voice_mic is not None:
+            gui.voice_mic.terminate()
+    
+    # Add keyboard control functionality
+    def setup_keyboard_controls():
+        """Setup keyboard controls for the robot"""
+        def on_key_press(event):
+            key = event.keysym
+            if key == "Up":
+                gui.on_direction_button(0)
+                send_robot_command("MvtControl H 0 10 0\n")  # Forward
+            elif key == "Down":
+                gui.on_direction_button(180)
+                send_robot_command("MvtControl H 0 -10 0\n")  # Backward
+            elif key == "Left":
+                gui.on_direction_button(270)
+                send_robot_command("MvtControl H -10 0 0\n")  # Left
+            elif key == "Right":
+                gui.on_direction_button(90)
+                send_robot_command("MvtControl H 10 0 0\n")  # Right
+            elif key == "space":
+                gui.on_stop()
+                send_robot_command("MvtControl H 0 0 0\n")  # Stop
+        
+        gui.root.bind("<KeyPress>", on_key_press)
+        print("Keyboard controls initialized")
