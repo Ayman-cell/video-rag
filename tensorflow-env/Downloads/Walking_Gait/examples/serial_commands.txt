@@ -1,0 +1,436 @@
+# 📝 Exemples de Commandes Série
+
+## Configuration
+
+**Vitesse** : 115200 baud  
+**Port** : COM4 (Windows) ou /dev/ttyUSB0 (Linux) - adapter selon votre système
+
+---
+
+## 🎯 Scénario 1 : Initialisation Simple
+
+### Objectif
+Initialiser le robot et vérifier que tous les servos répondent.
+
+### Étapes
+
+```
+Serial Console:
+
+→ [Attendre le message d'accueil]
+Serial Communication Established
+
+[Taper chaque ligne suivie de Entrée]
+
+c-1
+→ Pin 0 Centered
+→ Pin 1 Centered
+→ Pin 2 Centered
+→ Pin 3 Centered
+→ Pin 4 Centered
+→ Pin 6 Centered
+
+[Résultat attendu: Tous les servos vont à 90°]
+```
+
+---
+
+## 🚶 Scénario 2 : Marche Simple Automatique
+
+### Objectif
+Faire marcher le robot automatiquement pendant 10 secondes.
+
+### Étapes
+
+```
+c-1
+→ [Tous les servos centrés]
+
+w
+→ [Le robot commence à marcher]
+→ [Observer le mouvement des jambes alternées]
+
+[Attendre 10 secondes]
+
+w
+→ [Le robot s'arrête]
+→ Pin 0 Centered
+→ Pin 1 Centered
+...
+```
+
+---
+
+## 🎮 Scénario 3 : Contrôle Manuel de Position
+
+### Objectif
+Positionner la jambe droite à différentes positions en utilisant la cinématique inverse.
+
+### Étapes - Position Centrale
+
+```
+// Position centrale devant (jambe droite)
+l0 140
+→ (x,y) = (0.00, 140.00) → (Theta1, Theta2) = (90.00, 90.00)
+→ Servo 0 angle 90 pwm 307
+→ Servo 1 angle 90 pwm 307
+
+[Résultat: Jambe droite bien alignée devant]
+```
+
+### Étapes - Position Avant
+
+```
+// Position avant (20 mm devant)
+l20 140
+→ (x,y) = (20.00, 140.00) → (Theta1, Theta2) = (100.45, 85.32)
+→ Servo 0 angle 100.45 pwm 337
+→ Servo 1 angle 7.32 pwm 263
+
+[Résultat: Jambe droite basculée vers l'avant]
+```
+
+### Étapes - Position Arrière
+
+```
+// Position arrière (20 mm en arrière)
+l-20 140
+→ (x,y) = (-20.00, 140.00) → (Theta1, Theta2) = (79.55, 85.32)
+→ Servo 0 angle 79.55 pwm 277
+→ Servo 1 angle 7.32 pwm 263
+
+[Résultat: Jambe droite basculée vers l'arrière]
+```
+
+### Étapes - Position Levée
+
+```
+// Position levée (20 mm devant, 150 mm haut)
+l20 150
+→ (x,y) = (20.00, 150.00) → (Theta1, Theta2) = (95.12, 78.45)
+→ Servo 0 angle 95.12 pwm 318
+→ Servo 1 angle 5.45 pwm 251
+
+[Résultat: Jambe droite levée et étendue]
+```
+
+---
+
+## 🔄 Scénario 4 : Progression Manuelle du Cycle
+
+### Objectif
+Visualiser étape par étape la progression de la marche.
+
+### Étapes
+
+```
+// Début du cycle (jambe droite en swing)
+p0.0
+→ Progress 0.0
+→ Servo 0 angle 75.2 pwm 252
+→ Servo 1 angle 125.3 pwm 409
+
+// 25% du cycle
+p0.25
+→ Progress 0.25
+→ Servo 0 angle 78.5 pwm 263
+→ Servo 1 angle 118.7 pwm 390
+
+// Milieu (jambe gauche en swing)
+p0.5
+→ Progress 0.5
+→ Servo 0 angle 95.0 pwm 317
+→ Servo 1 angle 89.5 pwm 298
+
+// 75% du cycle
+p0.75
+→ Progress 0.75
+→ Servo 0 angle 112.3 pwm 375
+→ Servo 1 angle 52.4 pwm 218
+
+// Fin du cycle
+p1.0
+[Équivalent à p0.0]
+```
+
+---
+
+## 🎛️ Scénario 5 : Contrôle de Servos Individuels
+
+### Objectif
+Tester chaque servo indépendamment.
+
+### Étapes - Servo 0 (Hanche droite)
+
+```
+// Position neutre
+s0 90
+→ Servo 0 angle 90 pwm 307
+
+// Basculer à gauche (avant)
+s0 120
+→ Servo 0 angle 120 pwm 397
+
+// Basculer à droite (arrière)
+s0 60
+→ Servo 0 angle 60 pwm 217
+
+// Retour au neutre
+s0 90
+→ Servo 0 angle 90 pwm 307
+```
+
+### Étapes - Servo 1 (Genou droit)
+
+```
+// Position détendue (90°)
+s1 90
+→ Servo 1 angle 90 pwm 307
+
+// Plié jusqu'au bout
+s1 0
+→ Servo 1 angle 0 pwm 102
+
+// Déplie
+s1 45
+→ Servo 1 angle 45 pwm 204
+
+// Complètement déplié
+s1 180
+→ Servo 1 angle 180 pwm 511
+
+// Retour au neutre
+s1 90
+→ Servo 1 angle 90 pwm 307
+```
+
+### Étapes - Tous les Servos Séquentiellement
+
+```
+// Centrer tous
+c-1
+
+// Servo 0
+s0 45   [attendre 1s]
+s0 90   [attendre 1s]
+s0 135  [attendre 1s]
+s0 90   [attendre 1s]
+
+// Servo 1
+s1 0    [attendre 1s]
+s1 90   [attendre 1s]
+s1 180  [attendre 1s]
+s1 90   [attendre 1s]
+
+// Servo 2
+s2 0    [attendre 1s]
+s2 90   [attendre 1s]
+s2 180  [attendre 1s]
+s2 90   [attendre 1s]
+
+// ... et ainsi de suite pour les autres
+
+// Finalement, tous centrés
+c-1
+```
+
+---
+
+## ⚙️ Scénario 6 : Basculement Mode Genou
+
+### Objectif
+Comprendre la différence entre genou haut et genou bas.
+
+### Étapes
+
+```
+// Mode genou haut (défaut)
+k
+→ Knee Up: 1
+
+// Positionner jambe
+l0 140
+→ (x,y) = (0.00, 140.00) → (Theta1, Theta2) = (90.00, -90.00)
+
+// Basculer en mode genou bas
+k
+→ Knee Up: 0
+
+// Même position, mais autres angles
+l0 140
+→ (x,y) = (0.00, 140.00) → (Theta1, Theta2) = (90.00, 90.00)
+
+// Basculer de nouveau
+k
+→ Knee Up: 1
+```
+
+---
+
+## 🚨 Scénario 7 : Gestion d'Erreurs
+
+### Objectif
+Tester les cas d'erreur et les messages correspondants.
+
+### Étapes - Position Trop Loin
+
+```
+l100 100
+→ (x,y) = (100.00, 100.00) → Target Too Far, Distance 141.42
+→ HIP LIMIT Reached: Aborted movement
+→ return false
+```
+
+### Étapes - Position Trop Proche
+
+```
+l0 0
+→ (x,y) = (0.00, 0.00) → Target Too Close, Distance 0.00
+→ return false
+```
+
+### Étapes - Position Impossible
+
+```
+l0 50
+→ (x,y) = (0.00, 50.00) → Target Unreachable
+→ return false
+```
+
+### Étapes - Index Servo Invalide
+
+```
+s10 90
+→ Invalid servo index 10
+s6 90
+→ Invalid servo index 6 (car on n'a que 0-5)
+```
+
+### Étapes - Pin Invalide
+
+```
+c99
+→ Invalid servo index 99
+```
+
+---
+
+## 📊 Scénario 8 : Test de Marche Continue
+
+### Objectif
+Laisser le robot marcher continuellement et observer la stabilité.
+
+### Étapes
+
+```
+// Initialiser
+c-1
+→ [Tous les servos centrés]
+
+// Démarrer la marche
+w
+→ [Début du cycle de marche]
+
+[Laisser tourner 1 minute - observer le mouvement]
+
+// À chaque cycle (~4 secondes):
+→ Servo move progressif
+→ Alternance droite/gauche fluide
+→ Pas réguliers
+
+// Arrêter
+w
+→ [Retour à position neutre]
+```
+
+### Observations Attendues
+
+- ✅ Jambes alternent régulièrement
+- ✅ Pas réguliers et symétriques
+- ✅ Pas de mouvements saccadés
+- ✅ Hauteur constante (REST_HEIGHT)
+
+---
+
+## 📈 Scénario 9 : Ajustement de Paramètres (Modifications de Code)
+
+### Objectif
+Modifier les paramètres et observer les changements de marche.
+
+### Modifications Suggérées
+
+```cpp
+// Accélérer la marche (au lieu de 4000 ms)
+const float CYCLE_PERIOD = 2000.0;  // 2x plus rapide
+
+// Faire des pas plus grands
+const float STEP_LENGTH = 40.0;  // 2x step size
+
+// Lever plus haut
+const float MAX_SWING_HEIGHT = 40.0;  // 2x hauteur
+
+// Éventuellement modifier les limites d'angle
+float angleLimit[][2] = { 
+    {0.0, 100.0},   // Right Hip : limite réduite à 100°
+    ...
+};
+```
+
+After modification → Recharger le code → Tester `w`
+
+---
+
+## 💾 Enregistrement de Séquence
+
+### Utiliser Python pour Automatiser
+
+```python
+import serial
+import time
+
+ser = serial.Serial('COM4', 115200)
+time.sleep(2)
+
+commands = [
+    'c-1\n',
+    'w\n',         # Marche
+]
+
+for cmd in commands:
+    ser.write(cmd.encode())
+    time.sleep(0.5)
+    
+time.sleep(10)     # Laisser marcher 10s
+
+ser.write('w\n')   # Arrêter
+ser.close()
+```
+
+---
+
+## 🔧 Points de Vérification
+
+Avant de lancer les tests complets :
+
+- [ ] Arduino connecté et reconnu
+- [ ] Vitesse série : 115200 baud
+- [ ] Driver PWM détecté sur I2C
+- [ ] Tous les servos sous tension
+- [ ] Aucun câble desserré
+- [ ] Tous les servos répondent à `c-1`
+
+---
+
+## 🎓 Progression Recommandée
+
+1. **Démarrer simple** : `c-1` puis `w`
+2. **Tester positions** : `l` avec différentes coordonnées
+3. **Tester servos** : `s` individuellement
+4. **Observer progression** : `p0.0` à `p1.0`
+5. **Marche continue** : Laisser tourner quelques minutes
+6. **Ajuster paramètres** : Modifier CYCLE_PERIOD, STEP_LENGTH
+7. **Déboguer** : Activer più de Serial.println
+
+---
+
+**Dernière mise à jour** : 5 février 2026
