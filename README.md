@@ -1,135 +1,196 @@
-$readmeContent = @"
-# 🎬 Video RAG with Gemini
+# 🎬 Video RAG avec Gemini -- Analyse Vidéo Intelligente
 
-An intelligent video understanding application that leverages Google's Gemini API to analyze and answer questions about video content. This tool uses Retrieval-Augmented Generation (RAG) principles to provide context-aware responses about video content.
+**Une application d'analyse vidéo basée sur l'IA générative et la
+Retrieval-Augmented Generation (RAG) avec Google Gemini**
 
-## ✨ Features
+🚀 **Application Streamlit interactive pour comprendre et interroger vos
+vidéos avec précision**
 
-- **🎥 Video Analysis**: Upload and process videos using Google's state-of-the-art Gemini AI
-- **💬 Interactive Chat**: Ask natural language questions about video content
-- **🔄 RAG Technology**: Retrieve and analyze relevant video segments for accurate responses
-- **🎨 User-Friendly Interface**: Built with Streamlit for simple and intuitive interaction
-- **🔐 Secure API Integration**: Support for environment variables to keep your API key safe
-- **📊 Multi-Format Support**: Supports MP4, AVI, MOV, MKV, and WEBM formats
+------------------------------------------------------------------------
 
-## 🚀 Quick Start
+## 📋 Vue d'ensemble
 
-### Prerequisites
-- Python 3.8+
-- Google Gemini API Key ([Get it here](https://aistudio.google.com/app/apikey))
+**Video RAG avec Gemini** est une application intelligente de
+compréhension vidéo développée avec **Streamlit** et propulsée par l'API
+**Google Gemini**.
 
-### Installation
+Elle combine :
 
-1. **Clone the repository**
-``bash
+-   🎥 Analyse multimodale des vidéos\
+-   💬 Interaction conversationnelle en langage naturel\
+-   🔎 Récupération intelligente de segments pertinents (RAG)\
+-   🧠 Génération de réponses contextualisées
+
+### 🎯 Objectif
+
+Uploader une vidéo → Poser une question → Obtenir une réponse précise
+basée sur son contenu réel.
+
+------------------------------------------------------------------------
+
+## ✨ Fonctionnalités principales
+
+### 1️⃣ Analyse Vidéo avec Gemini
+
+-   🎥 Upload direct depuis l'interface web
+-   🧠 Compréhension multimodale via Google Gemini
+-   📊 Analyse contextuelle du contenu vidéo
+-   ⚡ Génération intelligente de réponses
+
+------------------------------------------------------------------------
+
+### 2️⃣ Système RAG Vidéo (Retrieval-Augmented Generation)
+
+-   🔎 Extraction des segments les plus pertinents
+-   🎯 Sélection des passages liés à la question
+-   🧩 Génération augmentée par récupération
+-   📈 Amélioration significative de la précision
+
+------------------------------------------------------------------------
+
+### 3️⃣ Interface Conversationnelle Interactive
+
+-   💬 Questions en langage naturel
+-   🔄 Interaction continue avec la vidéo analysée
+-   🧠 Compréhension contextuelle
+-   📋 Réponses détaillées et structurées
+
+------------------------------------------------------------------------
+
+### 4️⃣ Interface Web Moderne (Streamlit)
+
+-   🎨 Design clair et intuitif
+-   📱 Responsive et fluide
+-   🎯 Barre latérale pour configuration API
+-   ⚡ Expérience utilisateur optimisée
+
+------------------------------------------------------------------------
+
+### 5️⃣ Support Multi-Formats
+
+Formats compatibles :
+
+-   MP4\
+-   AVI\
+-   MOV\
+-   MKV\
+-   WEBM
+
+Taille recommandée : \~100MB maximum par vidéo.
+
+------------------------------------------------------------------------
+
+### 6️⃣ Sécurité et Gestion des Clés API
+
+-   🔐 Support des variables d'environnement (.env)
+-   ❌ Aucune clé API stockée dans le code
+-   🔒 Respect des bonnes pratiques de sécurité
+
+------------------------------------------------------------------------
+
+## 🛠️ Technologies utilisées
+
+  Technologie         Utilisation
+  ------------------- -------------------------------------------------
+  Streamlit           Interface web interactive
+  Google Gemini API   Analyse vidéo et génération IA
+  Python              Backend
+  python-dotenv       Gestion sécurisée des variables d'environnement
+  Pillow              Traitement d'images
+  Architecture RAG    Génération augmentée par récupération
+
+------------------------------------------------------------------------
+
+## 📋 Prérequis
+
+-   Python 3.8 ou supérieur
+-   pip installé
+-   Une clé API Google Gemini
+-   Connexion Internet stable
+
+Obtenir une clé API :\
+https://aistudio.google.com/app/apikey
+
+------------------------------------------------------------------------
+
+## 🚀 Installation et démarrage
+
+### 1️⃣ Cloner le dépôt
+
+``` bash
 git clone https://github.com/Ayman-cell/video-rag.git
 cd video-rag
-``
+```
 
-2. **Install dependencies**
-``bash
+### 2️⃣ Installer les dépendances
+
+``` bash
 pip install -r requirements.txt
-``
+```
 
-3. **Test your setup**
-``bash
+### 3️⃣ Tester votre installation
+
+``` bash
 python test_setup.py
-``
+```
 
-### Configuration
+### 4️⃣ Configurer la clé API
 
-**Option A: Environment Variables (Recommended)**
-``bash
+Option A --- Variable d'environnement :
+
+``` bash
 cp .env.example .env
-``
+```
 
-**Option B: Direct Input**
-- Run the app and enter your API key in the Streamlit sidebar
+Ajouter ensuite :
 
-### Running the Application
+GEMINI_API_KEY=votre-cle-api
 
-**Web Interface:**
-``bash
+------------------------------------------------------------------------
+
+### 5️⃣ Lancer l'application
+
+``` bash
 streamlit run app.py
-``
+```
 
-**Command-Line Demo:**
-``bash
-python demo.py
-``
+Accessible sur : http://localhost:8501
 
-## 📖 Usage Guide
+------------------------------------------------------------------------
 
-### Web Application
+## 📁 Structure du projet
 
-1. **Enter API Key** - Provide your Gemini API key in the sidebar
-2. **Upload Video** - Select a video file (up to ~100MB)
-3. **Wait for Processing** - The AI will analyze your video
-4. **Ask Questions** - Type questions about the video content
-5. **Get Insights** - Receive detailed AI-generated responses
+    video-rag/
+    ├── app.py
+    ├── demo.py
+    ├── requirements.txt
+    ├── env.example
+    ├── test_setup.py
+    ├── USAGE.md
+    └── README.md
 
-## 📁 Project Structure
+------------------------------------------------------------------------
 
-``
-video-rag/
-├── app.py                 # Main Streamlit web application
-├── demo.py               # Command-line demonstration
-├── requirements.txt      # Python dependencies
-├── env.example          # Environment variables template
-├── test_setup.py        # Setup verification script
-├── USAGE.md             # Detailed usage guide
-└── README.md            # This file
-``
+## 🤝 Contribution
 
-## 🔧 Requirements
+Les contributions sont les bienvenues !
 
-- streamlit>=1.28.0
-- google-generativeai>=0.8.0
-- python-dotenv>=1.0.0
-- pillow>=10.0.0
+------------------------------------------------------------------------
 
-## 🎯 Tips for Best Results
+## 📝 Licence
 
-- Use clear, well-lit videos
-- Be specific in your questions
-- Keep videos under 100MB when possible
-- Use common formats (MP4 is most reliable)
+Licence MIT
 
-## 🔐 Security Considerations
+------------------------------------------------------------------------
 
-- Never commit your API key to version control
-- Always use .env files for sensitive information
-- Videos are processed by Google's servers
+## 👨‍💻 Auteur
 
-## 🐛 Troubleshooting
+Ayman\
+https://github.com/Ayman-cell
 
-See [USAGE.md](USAGE.md) for detailed troubleshooting guide.
+------------------------------------------------------------------------
 
-## 💡 Key Features
+Dernière mise à jour : 14 février 2026\
+Version : 1.0.0
 
-- **VideoProcessor Class**: Handles video upload and processing
-- **Chat Interface**: Manages conversational interactions
-- **RAG Technology**: Context-aware video analysis
-
-## 📊 API Limits
-
-- Free Tier: Limited requests per minute/day
-- Max File Size: ~100MB per video
-- Processing Time: Varies based on video length
-
-## 🤝 Contributing
-
-Feel free to fork and improve this project!
-
-## 🔗 Resources
-
-- [Google AI Studio](https://aistudio.google.com)
-- [Gemini API Documentation](https://ai.google.dev/docs)
-- [Streamlit Documentation](https://docs.streamlit.io)
-
----
-
-**Made with ❤️ for video AI enthusiasts**
-
-*Happy video chatting! 🎬✨*
-"@; $readmeContent | Out-File -FilePath "video-rag-README.md" -Encoding UTF8
+Développé avec ❤️ pour les passionnés d'IA vidéo.
